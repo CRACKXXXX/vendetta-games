@@ -1,0 +1,66 @@
+/* src/components/VendettaGames/VendettaGames.css */
+.vendetta-main {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Ensures the whole rig fits correctly without scrollbars */
+    /* Add perspective directly to the main container for 3D realism */
+    perspective: 1200px; 
+}
+  
+.vendetta-title {
+    position: absolute;
+    top: 3%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 6vw; /* Ligeramente más pequeño para la cabecera */
+    color: #ff2a75;
+    text-align: center;
+    z-index: 10;
+    pointer-events: none; /* User needs to click panels underneath */
+    margin: 0;
+    text-shadow: 0 0 10px #ff2a75, 0 0 30px #ff2a75, 0 0 80px rgba(255, 42, 117, 0.4);
+    mix-blend-mode: screen; /* Integrates neon beautifully with the monitors below */
+    white-space: nowrap;
+}
+  
+.wall-viewport {
+    position: absolute; /* Using absolute so it perfectly centers relative to vendetta-main */
+    transform-origin: center center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease-out; /* Smooth transition if window resizes */
+}
+  
+.wall-container {
+    display: grid;
+    /* We have 61 panels. An 8x8 grid yields 64 slots, fitting perfectly. */
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    gap: 12px; /* The red lines visible between panels */
+    background-color: #ff003c; /* Red glowing gap color */
+    padding: 12px; /* Border matching the gap */
+    width: 1400px;
+    height: 1400px;
+    
+    /* 
+      Key 3D diamond perspective implementation:
+      1. rotateZ(-45deg) creates the grid diamonds.
+      2. rotateX(25deg) tilts the wall slightly backwards into the screen.
+    */
+    transform: rotateX(25deg) rotateZ(-45deg);
+    
+    /* Simulate light cast by the red neon gaps backwards */
+    box-shadow: 0 0 80px rgba(255, 0, 60, 0.5), inset 0 0 50px rgba(255, 0, 60, 0.2);
+}
+  
+/* Remaining 3 empty slots of the 8x8 grid will just be black/empty */
+.wall-container > :empty {
+    background-color: #0b0b0b;
+}

@@ -1,0 +1,67 @@
+/* src/components/PlayerPanel/PlayerPanel.css */
+.player-panel {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    background-color: #000;
+    transition: opacity 0.1s ease-in-out;
+    overflow: hidden;
+    /* Optional: a subtle border to separate from the intense red gap */
+    border: 1px solid rgba(0, 0, 0, 0.5); 
+  }
+  
+  /* Eliminated state: Drops to 10% opacity, extremely transparent, no other changes */
+  .player-panel.eliminated {
+    opacity: 0.1;
+  }
+  
+  .player-panel.alive {
+    opacity: 1;
+  }
+  
+  .panel-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  
+  .player-photo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Deepen the contrast to fit the dark aesthetic */
+    filter: contrast(110%) brightness(0.9);
+  }
+  
+  /* Extremely subtle ambient pink tint, as requested */
+  .ambient-tint {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 128, 0.08); /* Minimal pink */
+    mix-blend-mode: multiply; /* Blends nicely with the photo darks */
+    pointer-events: none;
+  }
+  
+  .player-number {
+    position: absolute;
+    bottom: 5%;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 40px; /* Base size, will be scaled organically by the parent scale() */
+    color: #00FFFF; /* Neon cyan */
+    text-shadow: 0 0 5px #00FFFF, 0 0 10px #00FFFF, 0 0 20px rgba(0, 255, 255, 0.8);
+    font-weight: bold;
+    letter-spacing: 2px;
+    z-index: 2;
+    pointer-events: none;
+    line-height: 1;
+  }
