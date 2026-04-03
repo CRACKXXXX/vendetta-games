@@ -1,66 +1,253 @@
 /* src/components/VendettaGames/VendettaGames.css */
+
+/* ═══════════════════════════════════════════
+   MAIN CONTAINER
+   ═══════════════════════════════════════════ */
 .vendetta-main {
-    position: relative;
     width: 100vw;
     height: 100vh;
     background-color: #000000;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    overflow: hidden; /* Ensures the whole rig fits correctly without scrollbars */
-    /* Add perspective directly to the main container for 3D realism */
-    perspective: 1200px; 
+    overflow: hidden;
+    position: relative;
 }
-  
-.vendetta-title {
+
+/* ═══════════════════════════════════════════
+   OUTER GOLDEN LINES — Background canvas
+   ═══════════════════════════════════════════ */
+.outer-golden-lines {
     position: absolute;
-    top: 3%;
-    left: 50%;
-    transform: translate(-50%, 0);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 6vw; /* Ligeramente más pequeño para la cabecera */
-    color: #ff2a75;
-    text-align: center;
-    z-index: 10;
-    pointer-events: none; /* User needs to click panels underneath */
-    margin: 0;
-    text-shadow: 0 0 10px #ff2a75, 0 0 30px #ff2a75, 0 0 80px rgba(255, 42, 117, 0.4);
-    mix-blend-mode: screen; /* Integrates neon beautifully with the monitors below */
-    white-space: nowrap;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
 }
-  
-.wall-viewport {
-    position: absolute; /* Using absolute so it perfectly centers relative to vendetta-main */
-    transform-origin: center center;
+
+/* ═══════════════════════════════════════════
+   TITLE — Squid Game font, gold gradient
+   ═══════════════════════════════════════════ */
+.vendetta-title {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    padding: 0.8vh 0 0.4vh;
+    font-family: 'Game Of Squids', 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: clamp(16px, 4.2vw, 68px);
+    letter-spacing: 0.25em;
+    color: #d4af37;
+    text-align: center;
+    white-space: nowrap;
+    background: linear-gradient(180deg, #f5e6a3 0%, #d4af37 40%, #b8860b 70%, #d4af37 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5))
+            drop-shadow(0 0 20px rgba(212, 175, 55, 0.25));
+    flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN FRAME — Premium giant TV look
+   ═══════════════════════════════════════════ */
+.screen-frame {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s ease-out; /* Smooth transition if window resizes */
+    margin: 4px 8px 8px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    /* Premium dark screen background */
+    background:
+        radial-gradient(ellipse at 30% 20%, rgba(20, 20, 25, 1) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(15, 15, 20, 1) 0%, transparent 50%),
+        linear-gradient(160deg, #0b0b0e 0%, #070709 40%, #0a0a0d 70%, #080810 100%);
+    /* Thin metallic border */
+    border: 1px solid rgba(50, 50, 55, 0.7);
+    /* Depth shadows */
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.9),
+        0 2px 15px rgba(0, 0, 0, 0.8),
+        inset 0 0 80px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    z-index: 1;
 }
-  
+
+/* ═══════════════════════════════════════════
+   ALIVE COUNTER — HUD overlay (unified style)
+   ═══════════════════════════════════════════ */
+.alive-counter {
+    flex-shrink: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 3px 18px;
+    margin: 0 auto;
+    background: rgba(8, 8, 12, 0.85);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    /* Shared style for all children */
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(10px, 1.2vw, 18px);
+    color: #d4af37;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 6px rgba(212, 175, 55, 0.35);
+}
+
+.counter-icon,
+.counter-label,
+.counter-value,
+.counter-slash,
+.counter-total {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    text-shadow: inherit;
+    letter-spacing: inherit;
+}
+
+/* Vignette overlay for screen depth */
+.screen-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    border-radius: 6px;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 55%,
+        rgba(0, 0, 0, 0.35) 100%
+    );
+}
+
+/* Golden flow canvas — behind diamonds, visible in gaps */
+.golden-flow-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: 6px;
+}
+
+/* ═══════════════════════════════════════════
+   WALL — Diamond rows container
+   ═══════════════════════════════════════════ */
 .wall-container {
-    display: grid;
-    /* We have 61 panels. An 8x8 grid yields 64 slots, fitting perfectly. */
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(8, 1fr);
-    gap: 12px; /* The red lines visible between panels */
-    background-color: #ff003c; /* Red glowing gap color */
-    padding: 12px; /* Border matching the gap */
-    width: 1400px;
-    height: 1400px;
-    
-    /* 
-      Key 3D diamond perspective implementation:
-      1. rotateZ(-45deg) creates the grid diamonds.
-      2. rotateX(25deg) tilts the wall slightly backwards into the screen.
-    */
-    transform: rotateX(25deg) rotateZ(-45deg);
-    
-    /* Simulate light cast by the red neon gaps backwards */
-    box-shadow: 0 0 80px rgba(255, 0, 60, 0.5), inset 0 0 50px rgba(255, 0, 60, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    position: relative;
+    z-index: 1;
+    transform: perspective(2000px) rotateX(1.5deg);
+    transform-origin: center center;
 }
-  
-/* Remaining 3 empty slots of the 8x8 grid will just be black/empty */
-.wall-container > :empty {
-    background-color: #0b0b0b;
+
+/* ═══════════════════════════════════════════
+   DIAMOND ROW — Interlocking offset pattern
+   ═══════════════════════════════════════════ */
+.diamond-row {
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    margin-top: calc(var(--cell) * -0.25);
 }
+
+.diamond-row:first-child {
+    margin-top: 0;
+}
+
+.diamond-row .player-panel {
+    width: var(--cell);
+    height: var(--cell);
+    flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE — 6 breakpoints for 60 players
+   
+   Cell = min(width-fit, height-fit)
+   Height factor = 1 + (rows - 1) × 0.75
+   Extra: title + counter + frame margins + padding
+   ═══════════════════════════════════════════════════ */
+
+/* ─── <450px: Mobile Portrait ─── 5 cols, 14 rows, hf=10.75 */
+.wall-container {
+    --cell: min(
+        calc((100vw - 36px) / 5),
+        calc((100vh - 130px) / 10.75)
+    );
+}
+.vendetta-title { font-size: clamp(14px, 5.5vw, 22px); letter-spacing: 0.12em; }
+
+/* ─── ≥450px: Mobile Landscape ─── 6 cols, 11 rows, hf=8.5 */
+@media (min-width: 450px) {
+    .wall-container {
+        --cell: min(
+            calc((100vw - 44px) / 6),
+            calc((100vh - 140px) / 8.5)
+        );
+    }
+    .vendetta-title { font-size: clamp(16px, 4vw, 26px); letter-spacing: 0.15em; }
+}
+
+/* ─── ≥650px: Tablet Portrait ─── 7 cols, 10 rows, hf=7.75 */
+@media (min-width: 650px) {
+    .wall-container {
+        --cell: min(
+            calc((100vw - 52px) / 7),
+            calc((100vh - 150px) / 7.75)
+        );
+    }
+    .vendetta-title { font-size: clamp(20px, 3.8vw, 34px); letter-spacing: 0.18em; }
+}
+
+/* ─── ≥900px: Tablet Landscape ─── 8 cols, 8 rows, hf=6.25 */
+@media (min-width: 900px) {
+    .wall-container {
+        --cell: min(
+            calc((100vw - 60px) / 8),
+            calc((100vh - 155px) / 6.25)
+        );
+    }
+    .vendetta-title { font-size: clamp(24px, 3.5vw, 42px); letter-spacing: 0.2em; }
+    .screen-frame { margin: 5px 12px 10px; border-radius: 8px; }
+}
+
+/* ─── ≥1200px: Desktop ─── 10 cols, 7 rows, hf=5.5 */
+@media (min-width: 1200px) {
+    .wall-container {
+        --cell: min(
+            calc((100vw - 76px) / 10),
+            calc((100vh - 165px) / 5.5)
+        );
+    }
+    .vendetta-title { font-size: clamp(30px, 3.2vw, 56px); letter-spacing: 0.22em; }
+    .screen-frame { margin: 6px 16px 12px; border-radius: 10px; }
+}
+
+/* ─── ≥1600px: Large Desktop / 4K ─── 11 cols, 6 rows, hf=4.75 */
+@media (min-width: 1600px) {
+    .wall-container {
+        --cell: min(
+            calc((100vw - 84px) / 11),
+            calc((100vh - 175px) / 4.75)
+        );
+    }
+    .vendetta-title { font-size: clamp(36px, 3vw, 68px); letter-spacing: 0.25em; }
+    .screen-frame { margin: 6px 20px 14px; border-radius: 12px; }
+}
+

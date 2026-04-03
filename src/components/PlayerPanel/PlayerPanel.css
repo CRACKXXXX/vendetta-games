@@ -1,67 +1,179 @@
 /* src/components/PlayerPanel/PlayerPanel.css */
+
+/* ═══════════════════════════════════════════
+   PLAYER PANEL — Diamond clip-path shape
+   ═══════════════════════════════════════════ */
 .player-panel {
     position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1;
     cursor: pointer;
-    background-color: #000;
-    transition: opacity 0.1s ease-in-out;
+    background-color: #0a0a0a;
     overflow: hidden;
-    /* Optional: a subtle border to separate from the intense red gap */
-    border: 1px solid rgba(0, 0, 0, 0.5); 
-  }
-  
-  /* Eliminated state: Drops to 10% opacity, extremely transparent, no other changes */
-  .player-panel.eliminated {
-    opacity: 0.1;
-  }
-  
-  .player-panel.alive {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                filter 0.4s ease;
+}
+
+/* ─── Hover effect ─── */
+.player-panel:hover {
+    transform: scale(1.08);
+    z-index: 10;
+    filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5)) brightness(1.12);
+}
+
+/* ═══════════════════════════════════════════
+   ALIVE state
+   ═══════════════════════════════════════════ */
+.player-panel.alive {
+    filter: drop-shadow(0 0 2px rgba(212, 175, 55, 0.2));
+}
+
+.player-panel.alive .player-photo {
+    filter: grayscale(50%) contrast(110%) brightness(0.95);
     opacity: 1;
-  }
-  
-  .panel-inner {
+}
+
+/* Alive hover glow */
+.player-panel.alive:hover {
+    filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6)) brightness(1.15);
+}
+
+/* ═══════════════════════════════════════════
+   ELIMINATED state — with entrance animation
+   ═══════════════════════════════════════════ */
+.player-panel.eliminated {
+    background: transparent;
+    animation: eliminateFlash 0.6s ease-out;
+}
+
+.player-panel.eliminated .player-photo {
+    filter: grayscale(100%) brightness(0.3);
+    opacity: 0.25;
+}
+
+/* Eliminated hover — show ghost clearly */
+.player-panel.eliminated:hover {
+    filter: drop-shadow(0 0 6px rgba(230, 0, 0, 0.4));
+}
+.player-panel.eliminated:hover .player-photo {
+    filter: grayscale(100%) brightness(0.45);
+    opacity: 0.35;
+}
+
+/* ─── Elimination flash keyframe ─── */
+@keyframes eliminateFlash {
+    0%   { filter: brightness(1); }
+    15%  { filter: brightness(2.5) drop-shadow(0 0 15px rgba(230, 0, 0, 0.9)); }
+    40%  { filter: brightness(0.6) drop-shadow(0 0 8px rgba(230, 0, 0, 0.6)); }
+    100% { filter: none; }
+}
+
+/* ═══════════════════════════════════════════
+   RED X — Two animated crossing bars
+   ═══════════════════════════════════════════ */
+.player-panel.eliminated::before,
+.player-panel.eliminated::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    width: 4px;
+    height: 60%;
+    background: #e60000;
+    border-radius: 2px;
+    z-index: 5;
+    pointer-events: none;
+    box-shadow:
+        0 0 8px rgba(230, 0, 0, 0.9),
+        0 0 20px rgba(230, 0, 0, 0.5),
+        0 0 40px rgba(230, 0, 0, 0.2);
+}
+
+/* Left slash — animated entrance */
+.player-panel.eliminated::before {
+    transform: translateX(-50%) rotate(45deg);
+    animation: xSlashLeft 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Right slash — animated entrance (staggered) */
+.player-panel.eliminated::after {
+    transform: translateX(-50%) rotate(-45deg);
+    animation: xSlashRight 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s forwards;
+}
+
+@keyframes xSlashLeft {
+    0%   { transform: translateX(-50%) rotate(45deg) scaleY(0); opacity: 0; }
+    50%  { opacity: 1; }
+    100% { transform: translateX(-50%) rotate(45deg) scaleY(1); opacity: 1; }
+}
+
+@keyframes xSlashRight {
+    0%   { transform: translateX(-50%) rotate(-45deg) scaleY(0); opacity: 0; }
+    50%  { opacity: 1; }
+    100% { transform: translateX(-50%) rotate(-45deg) scaleY(1); opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════
+   INNER PANEL LAYOUT
+   ═══════════════════════════════════════════ */
+.panel-inner {
     position: relative;
     width: 100%;
     height: 100%;
     display: flex;
     align-items: flex-end;
     justify-content: center;
-  }
-  
-  .player-photo {
+}
+
+/* ═══════════════════════════════════════════
+   PLAYER PHOTO — Smooth transitions
+   ═══════════════════════════════════════════ */
+.player-photo {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Deepen the contrast to fit the dark aesthetic */
-    filter: contrast(110%) brightness(0.9);
-  }
-  
-  /* Extremely subtle ambient pink tint, as requested */
-  .ambient-tint {
+    transition: filter 0.5s ease, opacity 0.5s ease;
+}
+
+/* ═══════════════════════════════════════════
+   PLAYER NUMBER — 7-segment cyan digital
+   ═══════════════════════════════════════════ */
+.player-number {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 0, 128, 0.08); /* Minimal pink */
-    mix-blend-mode: multiply; /* Blends nicely with the photo darks */
-    pointer-events: none;
-  }
-  
-  .player-number {
-    position: absolute;
-    bottom: 5%;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 40px; /* Base size, will be scaled organically by the parent scale() */
-    color: #00FFFF; /* Neon cyan */
-    text-shadow: 0 0 5px #00FFFF, 0 0 10px #00FFFF, 0 0 20px rgba(0, 255, 255, 0.8);
-    font-weight: bold;
-    letter-spacing: 2px;
+    bottom: 22%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'DSEG7 Classic', 'Share Tech Mono', monospace;
+    font-size: clamp(8px, 1.6vw, 22px);
+    color: #00e5ff;
+    text-shadow:
+        0 0 3px #00e5ff,
+        0 0 8px #00e5ff,
+        0 0 14px rgba(0, 229, 255, 0.4);
+    font-weight: 400;
+    letter-spacing: 1px;
     z-index: 2;
     pointer-events: none;
     line-height: 1;
-  }
+    white-space: nowrap;
+    transition: opacity 0.4s ease;
+}
+
+/* ─── Responsive number sizing ─── */
+@media (min-width: 900px) {
+    .player-number {
+        font-size: clamp(10px, 1.2vw, 20px);
+    }
+}
+@media (min-width: 1200px) {
+    .player-number {
+        font-size: clamp(12px, 1vw, 22px);
+    }
+}
+@media (min-width: 1600px) {
+    .player-number {
+        font-size: clamp(14px, 0.9vw, 24px);
+    }
+}

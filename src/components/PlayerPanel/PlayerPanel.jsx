@@ -17,8 +17,9 @@ function PlayerPanel({ id, isAlive, onToggle }) {
     >
       <div className="panel-inner">
         <img src={imageUrl} alt={`Player ${formattedId}`} className="player-photo" />
-        <div className="ambient-tint"></div>
-        <div className="player-number">{formattedId}</div>
+        {isAlive && (
+          <div className="player-number">{formattedId}</div>
+        )}
       </div>
     </div>
   );
