@@ -1,14 +1,13 @@
 // src/components/VendettaGames/VendettaGames.jsx
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
 import PlayerPanel from '../PlayerPanel/PlayerPanel';
 import './VendettaGames.css';
 
 function VendettaGames() {
-  const [players, setPlayers] = useState(() => {
-    const initial = {};
-    for (let i = 0; i <= 59; i++) initial[i] = true;
-    return initial;
-  });
+  const [players, setPlayers] = useState({});
+  const [loadingDb, setLoadingDb] = useState(true);
 
   const [colCount, setColCount] = useState(11);
   const canvasRef = useRef(null);
@@ -17,8 +16,32 @@ function VendettaGames() {
   const [winnerStatus, setWinnerStatus] = useState('none'); // 'none', 'transitioning', 'revealed'
   const [winnerImgState, setWinnerImgState] = useState(0);
 
-  const toggleStatus = (id) => {
-    setPlayers(prev => ({ ...prev, [id]: !prev[id] }));
+  // ═══ Real-time Firebase Sync ═══
+  useEffect(() => {
+    const docRef = doc(db, 'state', 'gameState');
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        setPlayers(docSnap.data());
+      } else {
+        const initial = {};
+        for (let i = 0; i <= 59; i++) initial[i] = true;
+        setDoc(docRef, initial);
+      }
+      setLoadingDb(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const toggleStatus = async (id) => {
+    // Only proceed if data has loaded
+    if (Object.keys(players).length === 0) return;
+    try {
+      const docRef = doc(db, 'state', 'gameState');
+      await updateDoc(docRef, { [id]: !players[id] });
+    } catch (err) {
+      console.error("Error updating player status:", err);
+    }
   };
 
   // ═══ Live alive count ═══
@@ -280,7 +303,11 @@ function VendettaGames() {
         <canvas ref={canvasRef} className="golden-flow-canvas" />
         {winnerStatus !== 'revealed' && (
           <div className={`wall-container ${winnerStatus === 'transitioning' ? 'dramatic-fade' : ''}`}>
-            {rows.map((row, rowIdx) => {
+            {loadingDb ? (
+              <div className="loading-message" style={{ color: '#00e5ff', fontFamily: "'Orbitron', sans-serif", fontSize: '24px', letterSpacing: '2px', textShadow: '0 0 10px #00e5ff', animation: 'pulseGoldWinner 1.5s infinite alternate' }}>
+                SINCRONIZANDO PARTICIPANTES...
+              </div>
+            ) : rows.map((row, rowIdx) => {
               const expectedCount = row.offset ? colCount - 1 : colCount;
               const spacers = expectedCount - row.count;
               const leftPad = Math.floor(spacers / 2);
