@@ -14,6 +14,8 @@ function VendettaGames() {
   const canvasRef = useRef(null);
   const outerCanvasRef = useRef(null);
 
+  const [winnerStatus, setWinnerStatus] = useState('none'); // 'none', 'transitioning', 'revealed'
+
   const toggleStatus = (id) => {
     setPlayers(prev => ({ ...prev, [id]: !prev[id] }));
   };
@@ -22,6 +24,25 @@ function VendettaGames() {
   const aliveCount = useMemo(() => {
     return Object.values(players).filter(Boolean).length;
   }, [players]);
+
+  // ═══ Winner Logic ═══
+  useEffect(() => {
+    if (aliveCount === 1 && winnerStatus === 'none') {
+        setWinnerStatus('transitioning');
+        setTimeout(() => {
+            setWinnerStatus('revealed');
+        }, 2500); // 2.5s apagón dramático
+    } else if (aliveCount > 1 && winnerStatus !== 'none') {
+        setWinnerStatus('none');
+    }
+  }, [aliveCount, winnerStatus]);
+
+  const winnerId = useMemo(() => {
+    if (aliveCount === 1) {
+        return Object.keys(players).find(id => players[id]);
+    }
+    return null;
+  }, [aliveCount, players]);
 
   // ═══ Responsive column count ═══
   useEffect(() => {
@@ -243,33 +264,51 @@ function VendettaGames() {
       <div className="screen-frame">
         <div className="screen-vignette"></div>
         <canvas ref={canvasRef} className="golden-flow-canvas" />
-        <div className="wall-container">
-          {rows.map((row, rowIdx) => {
-            const expectedCount = row.offset ? colCount - 1 : colCount;
-            const spacers = expectedCount - row.count;
-            const leftPad = Math.floor(spacers / 2);
-            const rightPad = spacers - leftPad;
-            return (
-              <div key={`${colCount}-${rowIdx}`} className={`diamond-row ${row.offset ? 'offset' : ''}`}>
-                {/* Left invisible spacers */}
-                {Array.from({ length: leftPad }).map((_, i) => (
-                  <div key={`lpad-${i}`} className="player-panel" style={{ visibility: 'hidden' }} />
-                ))}
-                {/* Real players */}
-                {Array.from({ length: row.count }).map((_, i) => {
-                  const pid = row.start + i;
-                  return (
-                    <PlayerPanel key={pid} id={pid} isAlive={players[pid]} onToggle={toggleStatus} />
-                  );
-                })}
-                {/* Right invisible spacers */}
-                {Array.from({ length: rightPad }).map((_, i) => (
-                  <div key={`rpad-${i}`} className="player-panel" style={{ visibility: 'hidden' }} />
-                ))}
+        {winnerStatus !== 'revealed' && (
+          <div className={`wall-container ${winnerStatus === 'transitioning' ? 'dramatic-fade' : ''}`}>
+            {rows.map((row, rowIdx) => {
+              const expectedCount = row.offset ? colCount - 1 : colCount;
+              const spacers = expectedCount - row.count;
+              const leftPad = Math.floor(spacers / 2);
+              const rightPad = spacers - leftPad;
+              return (
+                <div key={`${colCount}-${rowIdx}`} className={`diamond-row ${row.offset ? 'offset' : ''}`}>
+                  {/* Left invisible spacers */}
+                  {Array.from({ length: leftPad }).map((_, i) => (
+                    <div key={`lpad-${i}`} className="player-panel" style={{ visibility: 'hidden' }} />
+                  ))}
+                  {/* Real players */}
+                  {Array.from({ length: row.count }).map((_, i) => {
+                    const pid = row.start + i;
+                    return (
+                      <PlayerPanel key={pid} id={pid} isAlive={players[pid]} onToggle={toggleStatus} />
+                    );
+                  })}
+                  {/* Right invisible spacers */}
+                  {Array.from({ length: rightPad }).map((_, i) => (
+                    <div key={`rpad-${i}`} className="player-panel" style={{ visibility: 'hidden' }} />
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {winnerStatus === 'revealed' && winnerId !== null && (
+          <div className="winner-screen">
+            <h2 className="winner-title">GANADOR</h2>
+            <div className="winner-avatar-wrapper">
+              <div className="winner-avatar-container">
+                 <img 
+                   src={`https://i.pravatar.cc/800?img=${(parseInt(winnerId) % 70) + 1}`} 
+                   alt="Ganador" 
+                   className="winner-photo" 
+                 />
+                 <div className="winner-number">{winnerId.toString().padStart(3, '0')}</div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

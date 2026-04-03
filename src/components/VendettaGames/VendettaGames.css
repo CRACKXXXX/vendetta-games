@@ -55,6 +55,7 @@
    ═══════════════════════════════════════════ */
 .screen-frame {
     flex: 1;
+    align-self: stretch;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -249,5 +250,130 @@
     }
     .vendetta-title { font-size: clamp(36px, 3vw, 68px); letter-spacing: 0.25em; }
     .screen-frame { margin: 6px 20px 14px; border-radius: 12px; }
+}
+
+/* ═══════════════════════════════════════════
+   WINNER STATE — Transition and Reveal
+   ═══════════════════════════════════════════ */
+
+/* Apagón y zoom dramático (2.5s) para los paneles restantes */
+.wall-container.dramatic-fade {
+    transition: filter 2.5s cubic-bezier(0.5, 0, 1, 0.5), 
+                opacity 2.5s cubic-bezier(0.5, 0, 1, 0.5), 
+                transform 2.5s cubic-bezier(0.1, 0.9, 0.2, 1);
+    filter: brightness(0) blur(8px) sepia(1) hue-rotate(-50deg) saturate(5); /* Red/black blackout */
+    opacity: 0;
+    transform: scale(0.9) perspective(2000px) rotateX(2deg);
+    pointer-events: none;
+}
+
+/* ─── Winner Screen Container ─── */
+.winner-screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    animation: winnerReveal 2s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+@keyframes winnerReveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+        filter: drop-shadow(0 0 50px #d4af37) brightness(2);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: drop-shadow(0 0 0 transparent) brightness(1);
+    }
+}
+
+.winner-title {
+    font-family: 'Game Of Squids', 'Orbitron', sans-serif;
+    font-size: clamp(40px, 8vw, 130px);
+    margin: 0 0 4vh 0;
+    letter-spacing: 0.18em;
+    color: #d4af37;
+    background: linear-gradient(180deg, #fffceb 0%, #d4af37 40%, #cca32d 70%, #d4af37 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.8)) drop-shadow(0 0 40px rgba(212, 175, 55, 0.4));
+    animation: pulseGoldWinner 2.5s infinite alternate ease-in-out;
+}
+
+@keyframes pulseGoldWinner {
+    0% { filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5)) drop-shadow(0 0 30px rgba(212, 175, 55, 0.2)); }
+    100% { filter: drop-shadow(0 0 25px rgba(212, 175, 55, 1)) drop-shadow(0 0 70px rgba(212, 175, 55, 0.6)); }
+}
+
+/* Drop shadow wrap avoiding clip-path restrictions */
+.winner-avatar-wrapper {
+    position: relative;
+    filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.6))
+            drop-shadow(0 0 80px rgba(212, 175, 55, 0.3));
+    animation: floatingAvatar 6s ease-in-out infinite alternate;
+}
+
+@keyframes floatingAvatar {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-15px); }
+}
+
+.winner-avatar-container {
+    position: relative;
+    width: clamp(250px, 45vh, 600px);
+    height: clamp(250px, 45vh, 600px);
+    /* Diamond shape matching player panel */
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    background: #d4af37; /* Marco dorado posterior */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.winner-avatar-container::before {
+    content: '';
+    position: absolute;
+    inset: 8px; /* Thickness of the gold border */
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    background: #000; /* Backdrop to ensure no bleed */
+    z-index: 1;
+}
+
+.winner-photo {
+    position: absolute;
+    inset: 8px;
+    width: calc(100% - 16px);
+    height: calc(100% - 16px);
+    object-fit: cover;
+    z-index: 2;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* inner clip for image */
+    filter: grayscale(10%) contrast(115%) brightness(1.1);
+    animation: slowZoomWinner 20s linear infinite alternate;
+}
+
+@keyframes slowZoomWinner {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+}
+
+.winner-number {
+    position: absolute;
+    bottom: 22%;
+    font-family: 'DSEG7 Classic', 'Share Tech Mono', monospace;
+    font-size: clamp(24px, 5vh, 60px);
+    color: #00e5ff;
+    z-index: 3;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px 24px;
+    border-radius: 8px;
+    backdrop-filter: blur(6px);
+    text-shadow: 0 0 10px #00e5ff, 0 0 25px #00e5ff;
+    letter-spacing: 2px;
 }
 
