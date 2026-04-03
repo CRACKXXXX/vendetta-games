@@ -15,6 +15,7 @@ function VendettaGames() {
   const outerCanvasRef = useRef(null);
 
   const [winnerStatus, setWinnerStatus] = useState('none'); // 'none', 'transitioning', 'revealed'
+  const [winnerImgState, setWinnerImgState] = useState(0);
 
   const toggleStatus = (id) => {
     setPlayers(prev => ({ ...prev, [id]: !prev[id] }));
@@ -34,6 +35,7 @@ function VendettaGames() {
         }, 2500); // 2.5s apagón dramático
     } else if (aliveCount > 1 && winnerStatus !== 'none') {
         setWinnerStatus('none');
+        setWinnerImgState(0);
     }
   }, [aliveCount, winnerStatus]);
 
@@ -43,6 +45,18 @@ function VendettaGames() {
     }
     return null;
   }, [aliveCount, players]);
+
+  let winnerImgSrc = '';
+  if (winnerId !== null) {
+      const formattedWinnerId = winnerId.toString().padStart(3, '0');
+      if (winnerImgState === 0) winnerImgSrc = `/players/${formattedWinnerId}.jpg`;
+      else if (winnerImgState === 1) winnerImgSrc = `/players/${formattedWinnerId}.png`;
+      else winnerImgSrc = `https://i.pravatar.cc/800?img=${(parseInt(winnerId) % 70) + 1}`;
+  }
+
+  const handleWinnerImgError = () => {
+      if (winnerImgState < 2) setWinnerImgState(prev => prev + 1);
+  };
 
   // ═══ Responsive column count ═══
   useEffect(() => {
@@ -300,9 +314,10 @@ function VendettaGames() {
             <div className="winner-avatar-wrapper">
               <div className="winner-avatar-container">
                  <img 
-                   src={`https://i.pravatar.cc/800?img=${(parseInt(winnerId) % 70) + 1}`} 
+                   src={winnerImgSrc} 
                    alt="Ganador" 
-                   className="winner-photo" 
+                   className="winner-photo"
+                   onError={handleWinnerImgError}
                  />
                  <div className="winner-number">{winnerId.toString().padStart(3, '0')}</div>
               </div>
