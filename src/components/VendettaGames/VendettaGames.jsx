@@ -244,16 +244,31 @@ function VendettaGames() {
         <div className="screen-vignette"></div>
         <canvas ref={canvasRef} className="golden-flow-canvas" />
         <div className="wall-container">
-          {rows.map((row, rowIdx) => (
-            <div key={`${colCount}-${rowIdx}`} className={`diamond-row ${row.offset ? 'offset' : ''}`}>
-              {Array.from({ length: row.count }).map((_, i) => {
-                const pid = row.start + i;
-                return (
-                  <PlayerPanel key={pid} id={pid} isAlive={players[pid]} onToggle={toggleStatus} />
-                );
-              })}
-            </div>
-          ))}
+          {rows.map((row, rowIdx) => {
+            const expectedCount = row.offset ? colCount - 1 : colCount;
+            const spacers = expectedCount - row.count;
+            const leftPad = Math.floor(spacers / 2);
+            const rightPad = spacers - leftPad;
+            return (
+              <div key={`${colCount}-${rowIdx}`} className={`diamond-row ${row.offset ? 'offset' : ''}`}>
+                {/* Left invisible spacers */}
+                {Array.from({ length: leftPad }).map((_, i) => (
+                  <div key={`lpad-${i}`} className="player-panel" style={{ visibility: 'hidden' }} />
+                ))}
+                {/* Real players */}
+                {Array.from({ length: row.count }).map((_, i) => {
+                  const pid = row.start + i;
+                  return (
+                    <PlayerPanel key={pid} id={pid} isAlive={players[pid]} onToggle={toggleStatus} />
+                  );
+                })}
+                {/* Right invisible spacers */}
+                {Array.from({ length: rightPad }).map((_, i) => (
+                  <div key={`rpad-${i}`} className="player-panel" style={{ visibility: 'hidden' }} />
+                ))}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
