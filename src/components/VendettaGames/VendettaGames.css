@@ -163,7 +163,7 @@
     display: flex;
     justify-content: center;
     gap: 2px;
-    margin-top: calc(var(--cell) * -0.25);
+    margin-top: calc(var(--cell) * -0.20);
 }
 
 .diamond-row:first-child {
@@ -180,71 +180,71 @@
    RESPONSIVE — 6 breakpoints for 60 players
    
    Cell = min(width-fit, height-fit)
-   Height factor = 1 + (rows - 1) × 0.75
+   Overlap = 20%, so height factor = 1 + (rows - 1) × 0.80
    Extra: title + counter + frame margins + padding
    ═══════════════════════════════════════════════════ */
 
-/* ─── <450px: Mobile Portrait ─── 5 cols, 14 rows, hf=10.75 */
+/* ─── <450px: Mobile Portrait ─── 5 cols, 14 rows, hf=11.4 */
 .wall-container {
     --cell: min(
         calc((100vw - 36px) / 5),
-        calc((100vh - 130px) / 10.75)
+        calc((100vh - 130px) / 11.4)
     );
 }
 .vendetta-title { font-size: clamp(14px, 5.5vw, 22px); letter-spacing: 0.12em; }
 
-/* ─── ≥450px: Mobile Landscape ─── 6 cols, 11 rows, hf=8.5 */
+/* ─── ≥450px: Mobile Landscape ─── 6 cols, 11 rows, hf=9.0 */
 @media (min-width: 450px) {
     .wall-container {
         --cell: min(
             calc((100vw - 44px) / 6),
-            calc((100vh - 140px) / 8.5)
+            calc((100vh - 140px) / 9.0)
         );
     }
     .vendetta-title { font-size: clamp(16px, 4vw, 26px); letter-spacing: 0.15em; }
 }
 
-/* ─── ≥650px: Tablet Portrait ─── 7 cols, 10 rows, hf=7.75 */
+/* ─── ≥650px: Tablet Portrait ─── 7 cols, 10 rows, hf=8.2 */
 @media (min-width: 650px) {
     .wall-container {
         --cell: min(
             calc((100vw - 52px) / 7),
-            calc((100vh - 150px) / 7.75)
+            calc((100vh - 150px) / 8.2)
         );
     }
     .vendetta-title { font-size: clamp(20px, 3.8vw, 34px); letter-spacing: 0.18em; }
 }
 
-/* ─── ≥900px: Tablet Landscape ─── 8 cols, 8 rows, hf=6.25 */
+/* ─── ≥900px: Tablet Landscape ─── 8 cols, 8 rows, hf=6.6 */
 @media (min-width: 900px) {
     .wall-container {
         --cell: min(
             calc((100vw - 60px) / 8),
-            calc((100vh - 155px) / 6.25)
+            calc((100vh - 155px) / 6.6)
         );
     }
     .vendetta-title { font-size: clamp(24px, 3.5vw, 42px); letter-spacing: 0.2em; }
     .screen-frame { margin: 5px 12px 10px; border-radius: 8px; }
 }
 
-/* ─── ≥1200px: Desktop ─── 10 cols, 7 rows, hf=5.5 */
+/* ─── ≥1200px: Desktop ─── 10 cols, 7 rows, hf=5.8 */
 @media (min-width: 1200px) {
     .wall-container {
         --cell: min(
             calc((100vw - 76px) / 10),
-            calc((100vh - 165px) / 5.5)
+            calc((100vh - 165px) / 5.8)
         );
     }
     .vendetta-title { font-size: clamp(30px, 3.2vw, 56px); letter-spacing: 0.22em; }
     .screen-frame { margin: 6px 16px 12px; border-radius: 10px; }
 }
 
-/* ─── ≥1600px: Large Desktop / 4K ─── 11 cols, 6 rows, hf=4.75 */
+/* ─── ≥1600px: Large Desktop / 4K ─── 11 cols, 6 rows, hf=5.0 */
 @media (min-width: 1600px) {
     .wall-container {
         --cell: min(
             calc((100vw - 84px) / 11),
-            calc((100vh - 175px) / 4.75)
+            calc((100vh - 175px) / 5.0)
         );
     }
     .vendetta-title { font-size: clamp(36px, 3vw, 68px); letter-spacing: 0.25em; }
