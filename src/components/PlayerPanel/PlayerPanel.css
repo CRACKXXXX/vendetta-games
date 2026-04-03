@@ -5,7 +5,7 @@
    ═══════════════════════════════════════════ */
 .player-panel {
     position: relative;
-    cursor: pointer;
+    cursor: url('/cursor-hover.png') 16 16, pointer;
     background-color: #0a0a0a;
     overflow: hidden;
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
