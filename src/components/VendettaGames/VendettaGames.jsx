@@ -46,7 +46,11 @@ function VendettaGames() {
 
   // ═══ Live alive count ═══
   const aliveCount = useMemo(() => {
-    return Object.values(players).filter(Boolean).length;
+    // Only count keys that are numbers and are true (Alive)
+    return Object.keys(players).filter(key => {
+        const id = parseInt(key);
+        return !isNaN(id) && !key.includes('_photo') && players[key] === true;
+    }).length;
   }, [players]);
 
   // ═══ Winner Logic ═══
@@ -71,10 +75,16 @@ function VendettaGames() {
 
   let winnerImgSrc = '';
   if (winnerId !== null) {
+      const dbPhoto = players[`${winnerId}_photo`];
       const formattedWinnerId = winnerId.toString().padStart(3, '0');
-      if (winnerImgState === 0) winnerImgSrc = `/players/${formattedWinnerId}.jpg`;
-      else if (winnerImgState === 1) winnerImgSrc = `/players/${formattedWinnerId}.png`;
-      else winnerImgSrc = `https://i.pravatar.cc/800?img=${(parseInt(winnerId) % 70) + 1}`;
+
+      if (dbPhoto) {
+          winnerImgSrc = dbPhoto;
+      } else {
+          if (winnerImgState === 0) winnerImgSrc = `/players/${formattedWinnerId}.jpg`;
+          else if (winnerImgState === 1) winnerImgSrc = `/players/${formattedWinnerId}.png`;
+          else winnerImgSrc = `https://i.pravatar.cc/800?img=${(parseInt(winnerId) % 70) + 1}`;
+      }
   }
 
   const handleWinnerImgError = () => {
@@ -322,7 +332,13 @@ function VendettaGames() {
                   {Array.from({ length: row.count }).map((_, i) => {
                     const pid = row.start + i;
                     return (
-                      <PlayerPanel key={pid} id={pid} isAlive={players[pid]} onToggle={toggleStatus} />
+                      <PlayerPanel 
+                        key={pid} 
+                        id={pid} 
+                        isAlive={players[pid]} 
+                        photoUrl={players[`${pid}_photo`]} 
+                        onToggle={toggleStatus} 
+                      />
                     );
                   })}
                   {/* Right invisible spacers */}

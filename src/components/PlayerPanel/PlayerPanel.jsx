@@ -2,22 +2,29 @@
 import React, { useState, useEffect } from 'react';
 import './PlayerPanel.css';
 
-function PlayerPanel({ id, isAlive, onToggle }) {
+function PlayerPanel({ id, isAlive, photoUrl, onToggle }) {
   // Format ID to 3 digits e.g. 008, 045
   const formattedId = id.toString().padStart(3, '0');
   
-  // Img state: 0 = jpg, 1 = png, 2 = pravatar placeholder
+  // Img state handles fallback chain:
+  // 0: Cloud URL (if exists) or Local JPG
+  // 1: Local PNG
+  // 2: Placeholder Avatar
   const [imgState, setImgState] = useState(0);
 
   // Reset if ID changes dynamically
   useEffect(() => {
     setImgState(0);
-  }, [id]);
+  }, [id, photoUrl]);
 
   let currentSrc = '';
   if (imgState === 0) {
-    currentSrc = `/players/${formattedId}.jpg`;
+    currentSrc = photoUrl || `/players/${formattedId}.jpg`;
   } else if (imgState === 1) {
+    // If photoUrl failed, try local JPG. If local JPG failed, try local PNG.
+    currentSrc = photoUrl ? `/players/${formattedId}.jpg` : `/players/${formattedId}.png`;
+  } else if (imgState === 2 && photoUrl) {
+    // If we have photoUrl and already failed twice (Cloud + Local JPG), try local PNG
     currentSrc = `/players/${formattedId}.png`;
   } else {
     const avatarId = (id % 70) + 1;
@@ -25,9 +32,8 @@ function PlayerPanel({ id, isAlive, onToggle }) {
   }
 
   const handleError = () => {
-    if (imgState < 2) {
-      setImgState(prev => prev + 1);
-    }
+    // Prevent infinite loops and advance the fallback state
+    setImgState(prev => prev + 1);
   };
 
   return (

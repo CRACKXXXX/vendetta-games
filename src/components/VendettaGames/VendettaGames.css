@@ -1,7 +1,22 @@
 /* src/components/VendettaGames/VendettaGames.css */
 
 /* ═══════════════════════════════════════════
-   MAIN CONTAINER
+   GLOBAL RESET — Strict ONX / FiveM Standard
+   ═══════════════════════════════════════════ */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden !important;
+    background: #000;
+    -webkit-user-select: none;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+/* ═══════════════════════════════════════════
+   MAIN CONTAINER (ONX TV Optimized)
    ═══════════════════════════════════════════ */
 .vendetta-main {
     width: 100vw;
@@ -12,6 +27,9 @@
     align-items: center;
     overflow: hidden;
     position: relative;
+    /* Safe Zone: avoids clipping with 3D TV models frames */
+    padding: 2vmin; 
+    box-sizing: border-box;
 }
 
 /* ═══════════════════════════════════════════
@@ -27,16 +45,17 @@
 }
 
 /* ═══════════════════════════════════════════
-   TITLE — Squid Game font, gold gradient
+   TITLE — Squid Game font, Ultra Scalable
    ═══════════════════════════════════════════ */
 .vendetta-title {
     position: relative;
     z-index: 2;
     margin: 0;
-    padding: 0.8vh 0 0.4vh;
+    padding: 1vmin 0 0.5vmin;
     font-family: 'Game Of Squids', 'Orbitron', sans-serif;
     font-weight: 900;
-    font-size: clamp(16px, 4.2vw, 68px);
+    /* MASSIVE Scaling: No fixed limits for ONX TVs */
+    font-size: 8.5vmin; 
     letter-spacing: 0.25em;
     color: #d4af37;
     text-align: center;
@@ -45,13 +64,13 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5))
-            drop-shadow(0 0 20px rgba(212, 175, 55, 0.25));
+    filter: drop-shadow(0 0 1vmin rgba(212, 175, 55, 0.6)) 
+            drop-shadow(0 0 2vmin rgba(212, 175, 55, 0.3));
     flex-shrink: 0;
 }
 
 /* ═══════════════════════════════════════════
-   SCREEN FRAME — Premium giant TV look
+   SCREEN FRAME — Optimized for DUI
    ═══════════════════════════════════════════ */
 .screen-frame {
     flex: 1;
@@ -59,28 +78,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 4px 8px 8px;
+    margin: 1vmin 2vmin 2vmin;
     position: relative;
     overflow: hidden;
-    border-radius: 6px;
-    /* Premium dark screen background */
+    border-radius: 1vmin;
     background:
         radial-gradient(ellipse at 30% 20%, rgba(20, 20, 25, 1) 0%, transparent 50%),
         radial-gradient(ellipse at 70% 80%, rgba(15, 15, 20, 1) 0%, transparent 50%),
         linear-gradient(160deg, #0b0b0e 0%, #070709 40%, #0a0a0d 70%, #080810 100%);
-    /* Thin metallic border */
-    border: 1px solid rgba(50, 50, 55, 0.7);
-    /* Depth shadows */
+    border: 0.2vmin solid rgba(50, 50, 55, 0.7);
     box-shadow:
         0 0 0 1px rgba(0, 0, 0, 0.9),
-        0 2px 15px rgba(0, 0, 0, 0.8),
-        inset 0 0 80px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+        0 0.5vmin 3vmin rgba(0, 0, 0, 0.8),
+        inset 0 0 10vmin rgba(0, 0, 0, 0.4);
     z-index: 1;
 }
 
 /* ═══════════════════════════════════════════
-   ALIVE COUNTER — HUD overlay (unified style)
+   ALIVE COUNTER — Ultra Scalable HUD
    ═══════════════════════════════════════════ */
 .alive-counter {
     flex-shrink: 0;
@@ -88,292 +103,129 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    padding: 3px 18px;
+    gap: 1.5vmin;
+    padding: 1vmin 6vmin;
     margin: 0 auto;
-    background: rgba(8, 8, 12, 0.85);
-    border: 1px solid rgba(212, 175, 55, 0.2);
+    background: rgba(8, 8, 12, 0.9);
+    border: 0.2vmin solid rgba(212, 175, 55, 0.3);
     border-bottom: none;
-    border-radius: 4px 4px 0 0;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    /* Shared style for all children */
+    border-radius: 1.5vmin 1.5vmin 0 0;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    
     font-family: 'Orbitron', sans-serif;
-    font-size: clamp(10px, 1.2vw, 18px);
+    font-size: 3.5vmin; /* HUD text size */
     color: #d4af37;
-    letter-spacing: 0.1em;
-    text-shadow: 0 0 6px rgba(212, 175, 55, 0.35);
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 1.5vmin rgba(212, 175, 55, 0.4);
 }
 
-.counter-icon,
-.counter-label,
-.counter-value,
-.counter-slash,
-.counter-total {
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-    text-shadow: inherit;
-    letter-spacing: inherit;
+.counter-icon, .counter-label, .counter-value, .counter-slash, .counter-total {
+    font-family: inherit; font-size: inherit; color: inherit; text-shadow: inherit; letter-spacing: inherit;
 }
 
-/* Vignette overlay for screen depth */
-.screen-vignette {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 3;
-    border-radius: 6px;
-    background: radial-gradient(
-        ellipse at center,
-        transparent 55%,
-        rgba(0, 0, 0, 0.35) 100%
-    );
-}
-
-/* Golden flow canvas — behind diamonds, visible in gaps */
-.golden-flow-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-    border-radius: 6px;
-}
+/* Screen extras */
+.screen-vignette { position: absolute; inset: 0; pointer-events: none; z-index: 3; border-radius: 1vmin; background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.4) 100%); }
+.golden-flow-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; border-radius: 1vmin; }
 
 /* ═══════════════════════════════════════════
-   WALL — Diamond rows container
+   WALL — Diamond GRID (Pure Proportional)
    ═══════════════════════════════════════════ */
 .wall-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 8px;
+    padding: 1vmin;
     position: relative;
     z-index: 1;
     transform: perspective(2000px) rotateX(1.5deg);
     transform-origin: center center;
-}
-
-/* ═══════════════════════════════════════════
-   DIAMOND ROW — Interlocking offset pattern
-   ═══════════════════════════════════════════ */
-.diamond-row {
-    display: flex;
-    justify-content: center;
-    gap: 2px;
-    margin-top: calc(var(--cell) * -0.25);
-}
-
-.diamond-row:first-child {
-    margin-top: 0;
-}
-
-.diamond-row .player-panel {
-    width: var(--cell);
-    height: var(--cell);
-    flex-shrink: 0;
-}
-
-/* ═══════════════════════════════════════════════════
-   RESPONSIVE — 6 breakpoints for 60 players
-   
-   Cell = min(width-fit, height-fit)
-   Height factor = 1 + (rows - 1) × 0.75
-   Extra: title + counter + frame margins + padding
-   ═══════════════════════════════════════════════════ */
-
-/* ─── <450px: Mobile Portrait ─── 5 cols, 14 rows, hf=10.75 */
-.wall-container {
+    
+    /* Universal Cell Logic (No Media Queries needed for Size) */
+    /* Adjust --cols here for mobile logic only */
+    --cols: 11;
+    --rows: 6; 
+    --hf: 4.75; /* height factor = 1 + (rows - 1) * 0.75 */
+    
+    /* Aggressive scaling logic: fills 95% of available width or height */
     --cell: min(
-        calc((100vw - 36px) / 5),
-        calc((100vh - 130px) / 10.75)
+        calc((100vw - 12vmin) / var(--cols)),
+        calc((100vh - 22vmin) / var(--hf))
     );
 }
-.vendetta-title { font-size: clamp(14px, 5.5vw, 22px); letter-spacing: 0.12em; }
 
-/* ─── ≥450px: Mobile Landscape ─── 6 cols, 11 rows, hf=8.5 */
-@media (min-width: 450px) {
-    .wall-container {
-        --cell: min(
-            calc((100vw - 44px) / 6),
-            calc((100vh - 140px) / 8.5)
-        );
-    }
-    .vendetta-title { font-size: clamp(16px, 4vw, 26px); letter-spacing: 0.15em; }
-}
-
-/* ─── ≥650px: Tablet Portrait ─── 7 cols, 10 rows, hf=7.75 */
-@media (min-width: 650px) {
-    .wall-container {
-        --cell: min(
-            calc((100vw - 52px) / 7),
-            calc((100vh - 150px) / 7.75)
-        );
-    }
-    .vendetta-title { font-size: clamp(20px, 3.8vw, 34px); letter-spacing: 0.18em; }
-}
-
-/* ─── ≥900px: Tablet Landscape ─── 8 cols, 8 rows, hf=6.25 */
-@media (min-width: 900px) {
-    .wall-container {
-        --cell: min(
-            calc((100vw - 60px) / 8),
-            calc((100vh - 155px) / 6.25)
-        );
-    }
-    .vendetta-title { font-size: clamp(24px, 3.5vw, 42px); letter-spacing: 0.2em; }
-    .screen-frame { margin: 5px 12px 10px; border-radius: 8px; }
-}
-
-/* ─── ≥1200px: Desktop ─── 10 cols, 7 rows, hf=5.5 */
-@media (min-width: 1200px) {
-    .wall-container {
-        --cell: min(
-            calc((100vw - 76px) / 10),
-            calc((100vh - 165px) / 5.5)
-        );
-    }
-    .vendetta-title { font-size: clamp(30px, 3.2vw, 56px); letter-spacing: 0.22em; }
-    .screen-frame { margin: 6px 16px 12px; border-radius: 10px; }
-}
-
-/* ─── ≥1600px: Large Desktop / 4K ─── 11 cols, 6 rows, hf=4.75 */
-@media (min-width: 1600px) {
-    .wall-container {
-        --cell: min(
-            calc((100vw - 84px) / 11),
-            calc((100vh - 175px) / 4.75)
-        );
-    }
-    .vendetta-title { font-size: clamp(36px, 3vw, 68px); letter-spacing: 0.25em; }
-    .screen-frame { margin: 6px 20px 14px; border-radius: 12px; }
-}
+.diamond-row { display: flex; justify-content: center; gap: 0.5vmin; margin-top: calc(var(--cell) * -0.25); }
+.diamond-row:first-child { margin-top: 0; }
+.diamond-row .player-panel { width: var(--cell); height: var(--cell); flex-shrink: 0; }
 
 /* ═══════════════════════════════════════════
    WINNER STATE — Transition and Reveal
    ═══════════════════════════════════════════ */
-
-/* Apagón y zoom dramático (2.5s) para los paneles restantes */
 .wall-container.dramatic-fade {
-    transition: filter 2.5s cubic-bezier(0.5, 0, 1, 0.5), 
-                opacity 2.5s cubic-bezier(0.5, 0, 1, 0.5), 
-                transform 2.5s cubic-bezier(0.1, 0.9, 0.2, 1);
-    filter: brightness(0) blur(8px) sepia(1) hue-rotate(-50deg) saturate(5); /* Red/black blackout */
-    opacity: 0;
-    transform: scale(0.9) perspective(2000px) rotateX(2deg);
-    pointer-events: none;
+    transition: filter 2.5s cubic-bezier(0.5, 0, 1, 0.5), opacity 2.5s, transform 2.5s;
+    filter: brightness(0) blur(8px) sepia(1); opacity: 0; transform: scale(0.9); pointer-events: none;
 }
 
-/* ─── Winner Screen Container ─── */
-.winner-screen {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    animation: winnerReveal 2s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
-}
-
-@keyframes winnerReveal {
-    0% {
-        opacity: 0;
-        transform: scale(0.3);
-        filter: drop-shadow(0 0 50px #d4af37) brightness(2);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-        filter: drop-shadow(0 0 0 transparent) brightness(1);
-    }
-}
+.winner-screen { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; animation: winnerReveal 2s forwards; }
+@keyframes winnerReveal { 0% { opacity: 0; transform: scale(0.3); } 100% { opacity: 1; transform: scale(1); } }
 
 .winner-title {
     font-family: 'Game Of Squids', 'Orbitron', sans-serif;
-    font-size: clamp(40px, 8vw, 130px);
-    margin: 0 0 4vh 0;
+    font-size: 12vmin; /* Reduced from 14vmin for safety */
+    margin: 0 0 2vmin 0;
     letter-spacing: 0.18em;
     color: #d4af37;
     background: linear-gradient(180deg, #fffceb 0%, #d4af37 40%, #cca32d 70%, #d4af37 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.8)) drop-shadow(0 0 40px rgba(212, 175, 55, 0.4));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    filter: drop-shadow(0 0 2.5vmin rgba(212,175,55,0.8));
     animation: pulseGoldWinner 2.5s infinite alternate ease-in-out;
 }
 
-@keyframes pulseGoldWinner {
-    0% { filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5)) drop-shadow(0 0 30px rgba(212, 175, 55, 0.2)); }
-    100% { filter: drop-shadow(0 0 25px rgba(212, 175, 55, 1)) drop-shadow(0 0 70px rgba(212, 175, 55, 0.6)); }
+.winner-avatar-wrapper { position: relative; filter: drop-shadow(0 0 5vmin rgba(212,175,55,0.6)); animation: floatingAvatar 6s infinite alternate ease-in-out; }
+.winner-avatar-container { position: relative; width: 46vmin; height: 46vmin; max-width: 1800px; max-height: 1800px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); background: #d4af37; display: flex; align-items: center; justify-content: center; border-width: 1.25vmin; }
+.winner-avatar-container::before { content: ''; position: absolute; inset: 1.5vmin; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); background: #000; z-index: 1; }
+.winner-photo { 
+    position: absolute; 
+    inset: 1.5vmin; 
+    width: calc(100% - 3vmin); 
+    height: calc(100% - 3vmin); 
+    object-fit: cover; 
+    object-position: center 25%; /* Focal point on face */
+    z-index: 2; 
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); 
+}
+.winner-number { 
+    position: absolute; 
+    bottom: 18%; /* Lifted for safety */
+    font-size: 7vmin; 
+    color: #00e5ff; 
+    z-index: 4; 
+    background: rgba(0,0,0,0.45); 
+    padding: 1.25vmin 3.5vmin; 
+    border-radius: 1vmin; 
+    text-shadow: 0 0 1.5vmin #00e5ff; 
 }
 
-/* Drop shadow wrap avoiding clip-path restrictions */
-.winner-avatar-wrapper {
-    position: relative;
-    filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.6))
-            drop-shadow(0 0 80px rgba(212, 175, 55, 0.3));
-    animation: floatingAvatar 6s ease-in-out infinite alternate;
-}
-
+/* ═══════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════ */
 @keyframes floatingAvatar {
     0% { transform: translateY(0); }
-    100% { transform: translateY(-15px); }
+    100% { transform: translateY(-1.5vmin); }
 }
 
-.winner-avatar-container {
-    position: relative;
-    width: clamp(250px, 45vh, 600px);
-    height: clamp(250px, 45vh, 600px);
-    /* Diamond shape matching player panel */
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-    background: #d4af37; /* Marco dorado posterior */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+@keyframes pulseGoldWinner {
+    0% { filter: drop-shadow(0 0 2vmin rgba(212,175,55,0.6)); transform: scale(1); }
+    100% { filter: drop-shadow(0 0 4vmin rgba(212,175,55,0.9)); transform: scale(1.02); }
 }
 
-.winner-avatar-container::before {
-    content: '';
-    position: absolute;
-    inset: 8px; /* Thickness of the gold border */
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-    background: #000; /* Backdrop to ensure no bleed */
-    z-index: 1;
-}
 
-.winner-photo {
-    position: absolute;
-    inset: 8px;
-    width: calc(100% - 16px);
-    height: calc(100% - 16px);
-    object-fit: cover;
-    z-index: 2;
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* inner clip for image */
-    filter: grayscale(10%) contrast(115%) brightness(1.1);
-    animation: slowZoomWinner 20s linear infinite alternate;
-}
-
-@keyframes slowZoomWinner {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.2); }
-}
-
-.winner-number {
-    position: absolute;
-    bottom: 22%;
-    font-family: 'DSEG7 Classic', 'Share Tech Mono', monospace;
-    font-size: clamp(24px, 5vh, 60px);
-    color: #00e5ff;
-    z-index: 3;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 10px 24px;
-    border-radius: 8px;
-    backdrop-filter: blur(6px);
-    text-shadow: 0 0 10px #00e5ff, 0 0 25px #00e5ff;
-    letter-spacing: 2px;
-}
-
+/* ═══════════════════════════════════════════════════
+   ADAPTIVE COLS — Only for SMALL SCREENS
+   Layout remains 11 cols by default for TVs.
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 1200px) { .wall-container { --cols: 10; --rows: 7; --hf: 5.5; } }
+@media (max-width: 900px) { .wall-container { --cols: 8; --rows: 8; --hf: 6.25; } }
+@media (max-width: 650px) { .wall-container { --cols: 7; --rows: 10; --hf: 7.75; } }
+@media (max-width: 450px) { .wall-container { --cols: 5; --rows: 14; --hf: 10.75; } }

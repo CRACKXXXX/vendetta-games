@@ -5,160 +5,24 @@
    ═══════════════════════════════════════════ */
 .player-panel {
     position: relative;
-    cursor: url('/cursor-hover.png') 16 16, pointer;
+    /* Universal Thickness for ONX Big TVs */
+    --x-thickness: 1.25vmin; 
+    cursor: pointer;
     background-color: #0a0a0a;
     overflow: hidden;
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-        filter 0.4s ease;
+    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease;
 }
 
-/* ─── Hover effect ─── */
+/* ─── Hover effect (Enhanced for FiveM) ─── */
 .player-panel:hover {
-    transform: scale(1.08);
+    transform: scale(1.1);
     z-index: 10;
-    filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5)) brightness(1.12);
+    filter: drop-shadow(0 0 1.5vmin rgba(212, 175, 55, 0.6)) brightness(1.2);
 }
 
-/* ═══════════════════════════════════════════
-   ALIVE state
-   ═══════════════════════════════════════════ */
-.player-panel.alive {
-    filter: drop-shadow(0 0 2px rgba(212, 175, 55, 0.2));
-}
+.player-panel.alive { filter: drop-shadow(0 0 0.5vmin rgba(212, 175, 55, 0.2)); }
 
-.player-panel.alive .player-photo {
-    filter: grayscale(50%) contrast(110%) brightness(0.95);
-    opacity: 1;
-}
-
-/* Alive hover glow */
-.player-panel.alive:hover {
-    filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6)) brightness(1.15);
-}
-
-/* ═══════════════════════════════════════════
-   ELIMINATED state — with entrance animation
-   ═══════════════════════════════════════════ */
-.player-panel.eliminated {
-    background: transparent;
-    animation: eliminateFlash 0.6s ease-out;
-}
-
-.player-panel.eliminated .player-photo {
-    filter: grayscale(100%) brightness(0.3);
-    opacity: 0.25;
-}
-
-/* Eliminated hover — show ghost clearly */
-.player-panel.eliminated:hover {
-    filter: drop-shadow(0 0 6px rgba(230, 0, 0, 0.4));
-}
-
-.player-panel.eliminated:hover .player-photo {
-    filter: grayscale(100%) brightness(0.45);
-    opacity: 0.35;
-}
-
-/* ─── Elimination flash keyframe ─── */
-@keyframes eliminateFlash {
-    0% {
-        filter: brightness(1);
-    }
-
-    15% {
-        filter: brightness(2.5) drop-shadow(0 0 15px rgba(230, 0, 0, 0.9));
-    }
-
-    40% {
-        filter: brightness(0.6) drop-shadow(0 0 8px rgba(230, 0, 0, 0.6));
-    }
-
-    100% {
-        filter: none;
-    }
-}
-
-/* ═══════════════════════════════════════════
-   RED X — Two animated crossing bars
-   ═══════════════════════════════════════════ */
-.player-panel.eliminated::before,
-.player-panel.eliminated::after {
-    content: '';
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    width: 4px;
-    height: 60%;
-    background: #e60000;
-    border-radius: 2px;
-    z-index: 5;
-    pointer-events: none;
-    box-shadow:
-        0 0 8px rgba(230, 0, 0, 0.9),
-        0 0 20px rgba(230, 0, 0, 0.5),
-        0 0 40px rgba(230, 0, 0, 0.2);
-}
-
-/* Left slash — animated entrance */
-.player-panel.eliminated::before {
-    transform: translateX(-50%) rotate(45deg);
-    animation: xSlashLeft 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-/* Right slash — animated entrance (staggered) */
-.player-panel.eliminated::after {
-    transform: translateX(-50%) rotate(-45deg);
-    animation: xSlashRight 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s forwards;
-}
-
-@keyframes xSlashLeft {
-    0% {
-        transform: translateX(-50%) rotate(45deg) scaleY(0);
-        opacity: 0;
-    }
-
-    50% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateX(-50%) rotate(45deg) scaleY(1);
-        opacity: 1;
-    }
-}
-
-@keyframes xSlashRight {
-    0% {
-        transform: translateX(-50%) rotate(-45deg) scaleY(0);
-        opacity: 0;
-    }
-
-    50% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateX(-50%) rotate(-45deg) scaleY(1);
-        opacity: 1;
-    }
-}
-
-/* ═══════════════════════════════════════════
-   INNER PANEL LAYOUT
-   ═══════════════════════════════════════════ */
-.panel-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-}
-
-/* ═══════════════════════════════════════════
-   PLAYER PHOTO — Smooth transitions
-   ═══════════════════════════════════════════ */
 .player-photo {
     position: absolute;
     top: 0;
@@ -166,55 +30,73 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: filter 0.5s ease, opacity 0.5s ease;
+    object-position: center 25%; /* Slightly higher to focus on faces */
+    transform: scale(1.15); /* Zoom to fill the diamond corners */
+    transition: filter 0.5s ease, opacity 0.5s ease, transform 0.4s ease;
+}
+
+.player-panel.alive .player-photo { filter: grayscale(40%) contrast(110%); opacity: 1; }
+
+/* ═══════════════════════════════════════════
+   ELIMINATED state
+   ═══════════════════════════════════════════ */
+.player-panel.eliminated { background: transparent; animation: eliminateFlash 0.6s ease-out; }
+.player-panel.eliminated .player-photo { filter: grayscale(100%) brightness(0.2) blur(1px); opacity: 0.2; }
+
+@keyframes eliminateFlash {
+    0% { filter: brightness(1); }
+    15% { filter: brightness(3) drop-shadow(0 0 4vmin rgba(230, 0, 0, 1)); }
+    100% { filter: none; }
 }
 
 /* ═══════════════════════════════════════════
-   PLAYER NUMBER — 7-segment cyan digital
+   RED X — Animated Crossing Bars (Proportional)
+   ═══════════════════════════════════════════ */
+.player-panel.eliminated::before,
+.player-panel.eliminated::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    width: var(--x-thickness);
+    height: 60%;
+    background: #e60000;
+    border-radius: calc(var(--x-thickness) / 2);
+    z-index: 5;
+    pointer-events: none;
+    box-shadow: 0 0 1vmin rgba(230, 0, 0, 0.9), 0 0 3vmin rgba(230, 0, 0, 0.4);
+}
+
+.player-panel.eliminated::before { transform: translateX(-50%) rotate(45deg); animation: xSlashLeft 0.45s forwards; }
+.player-panel.eliminated::after { transform: translateX(-50%) rotate(-45deg); animation: xSlashRight 0.45s 0.1s forwards; }
+
+@keyframes xSlashLeft { 0% { transform: translateX(-50%) rotate(45deg) scaleY(0); } 100% { transform: translateX(-50%) rotate(45deg) scaleY(1); } }
+@keyframes xSlashRight { 0% { transform: translateX(-50%) rotate(-45deg) scaleY(0); } 100% { transform: translateX(-50%) rotate(-45deg) scaleY(1); } }
+
+/* ═══════════════════════════════════════════
+   PLAYER NUMBER — Ultra Scalable (FiveM)
    ═══════════════════════════════════════════ */
 .player-number {
     position: absolute;
-    bottom: 22%;
+    bottom: 12%; /* Lowered to avoid covering faces */
     left: 50%;
     transform: translateX(-50%);
     font-family: 'DSEG7 Classic', 'Share Tech Mono', monospace;
-    font-size: clamp(8px, 1.6vw, 22px);
+    font-size: 2.2vmin; /* Smaller size */
     color: #00e5ff;
-    text-shadow:
-        0 0 3px #00e5ff,
-        0 0 8px #00e5ff,
-        0 0 14px rgba(0, 229, 255, 0.4);
-    font-weight: 400;
-    letter-spacing: 1px;
+    text-shadow: 0 0 0.5vmin rgba(0, 229, 255, 0.8), 0 0 1.2vmin rgba(0, 229, 255, 0.4);
+    background: rgba(0, 0, 0, 0.35); /* More transparent */
+    padding: 0.3vmin 1vmin;
+    border-radius: 0.5vmin;
+    backdrop-filter: blur(1px);
     z-index: 2;
     pointer-events: none;
-    line-height: 1;
-    white-space: nowrap;
-    transition: opacity 0.4s ease;
-
-    /* Fondo con transparencia para destacar el número */
-    background: rgba(0, 0, 0, 0.55);
-    padding: 3px 6px;
-    border-radius: 4px;
-    backdrop-filter: blur(1px);
-    -webkit-backdrop-filter: blur(1px);
+    letter-spacing: 0.1vmin;
+    transition: opacity 0.3s ease;
 }
 
-/* ─── Responsive number sizing ─── */
-@media (min-width: 900px) {
-    .player-number {
-        font-size: clamp(10px, 1.2vw, 20px);
-    }
-}
-
-@media (min-width: 1200px) {
-    .player-number {
-        font-size: clamp(12px, 1vw, 22px);
-    }
-}
-
-@media (min-width: 1600px) {
-    .player-number {
-        font-size: clamp(14px, 0.9vw, 24px);
-    }
+/* Smaller screens adjustments (only if strictly necessary) */
+@media (max-width: 900px) {
+    .player-number { font-size: 4vmin; }
+    .player-panel { --x-thickness: 1.5vmin; }
 }
