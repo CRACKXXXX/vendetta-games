@@ -2,37 +2,36 @@
 import React, { useState, useEffect } from 'react';
 import './PlayerPanel.css';
 
-function PlayerPanel({ id, isAlive, photoUrl, onToggle }) {
-  // Format ID to 3 digits e.g. 008, 045
+// Extensiones soportadas, en orden de prioridad (respetar mayúsculas/minúsculas exactas)
+const SUPPORTED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'webp'];
+
+function PlayerPanel({ id, isAlive, onToggle }) {
+  // Formatear ID a 3 dígitos ej. 008, 045
   const formattedId = id.toString().padStart(3, '0');
   
-  // Img state handles fallback chain:
-  // 0: Cloud URL (if exists) or Local JPG
-  // 1: Local PNG
-  // 2: Placeholder Avatar
+  // Estado del fallback de imagen:
+  // 0..N: prueba extensiones locales en orden (png, jpg, jpeg, webp)
+  // N+1: avatar placeholder externo
   const [imgState, setImgState] = useState(0);
 
-  // Reset if ID changes dynamically
+  // Reiniciar si cambia el ID
   useEffect(() => {
     setImgState(0);
-  }, [id, photoUrl]);
+  }, [id]);
 
   let currentSrc = '';
-  if (imgState === 0) {
-    currentSrc = photoUrl || `/players/${formattedId}.jpg`;
-  } else if (imgState === 1) {
-    // If photoUrl failed, try local JPG. If local JPG failed, try local PNG.
-    currentSrc = photoUrl ? `/players/${formattedId}.jpg` : `/players/${formattedId}.png`;
-  } else if (imgState === 2 && photoUrl) {
-    // If we have photoUrl and already failed twice (Cloud + Local JPG), try local PNG
-    currentSrc = `/players/${formattedId}.png`;
+  if (imgState < SUPPORTED_EXTENSIONS.length) {
+    // Ruta absoluta desde la raíz — Vite copia public/ tal cual a dist/
+    const ext = SUPPORTED_EXTENSIONS[imgState];
+    currentSrc = `/players/${formattedId}.${ext}`;
   } else {
+    // Último recurso: avatar externo
     const avatarId = (id % 70) + 1;
     currentSrc = `https://i.pravatar.cc/300?img=${avatarId}`;
   }
 
   const handleError = () => {
-    // Prevent infinite loops and advance the fallback state
+    // Avanzar al siguiente formato disponible
     setImgState(prev => prev + 1);
   };
 
@@ -44,7 +43,7 @@ function PlayerPanel({ id, isAlive, photoUrl, onToggle }) {
       <div className="panel-inner">
         <img 
           src={currentSrc} 
-          alt={`Player ${formattedId}`} 
+          alt={`Jugador ${formattedId}`} 
           className="player-photo" 
           onError={handleError}
         />

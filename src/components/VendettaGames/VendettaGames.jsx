@@ -73,22 +73,23 @@ function VendettaGames() {
     return null;
   }, [aliveCount, players]);
 
+  // Extensiones soportadas para la imagen del ganador
+  const WINNER_EXTENSIONS = ['png', 'jpg', 'jpeg', 'webp'];
+
   let winnerImgSrc = '';
   if (winnerId !== null) {
-      const dbPhoto = players[`${winnerId}_photo`];
       const formattedWinnerId = winnerId.toString().padStart(3, '0');
 
-      if (dbPhoto) {
-          winnerImgSrc = dbPhoto;
+      if (winnerImgState < WINNER_EXTENSIONS.length) {
+          const ext = WINNER_EXTENSIONS[winnerImgState];
+          winnerImgSrc = `/players/${formattedWinnerId}.${ext}`;
       } else {
-          if (winnerImgState === 0) winnerImgSrc = `/players/${formattedWinnerId}.jpg`;
-          else if (winnerImgState === 1) winnerImgSrc = `/players/${formattedWinnerId}.png`;
-          else winnerImgSrc = `https://i.pravatar.cc/800?img=${(parseInt(winnerId) % 70) + 1}`;
+          winnerImgSrc = `https://i.pravatar.cc/800?img=${(parseInt(winnerId) % 70) + 1}`;
       }
   }
 
   const handleWinnerImgError = () => {
-      if (winnerImgState < 2) setWinnerImgState(prev => prev + 1);
+      setWinnerImgState(prev => prev + 1);
   };
 
   // ═══ Responsive column count ═══
@@ -336,7 +337,6 @@ function VendettaGames() {
                         key={pid} 
                         id={pid} 
                         isAlive={players[pid]} 
-                        photoUrl={players[`${pid}_photo`]} 
                         onToggle={toggleStatus} 
                       />
                     );
