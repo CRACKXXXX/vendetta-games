@@ -144,9 +144,9 @@ html, body {
     
     /* Universal Cell Logic (No Media Queries needed for Size) */
     /* Adjust --cols here for mobile logic only */
-    --cols: 12;
-    --rows: 7; 
-    --hf: 5.5; /* height factor = 1 + (rows - 1) * 0.75 */
+    --cols: 11;
+    --rows: 8; 
+    --hf: 6.25; /* height factor = 1 + (rows - 1) * 0.75 */
     
     /* Aggressive scaling logic: fills 95% of available width or height */
     --cell: min(
@@ -223,9 +223,10 @@ html, body {
 
 /* ═══════════════════════════════════════════════════
    ADAPTIVE COLS — Only for SMALL SCREENS
-   Layout remains 12 cols by default for TVs.
+   Layout remains 11 cols by default for TVs.
    ═══════════════════════════════════════════════════ */
-@media (max-width: 1200px) { .wall-container { --cols: 10; --rows: 9; --hf: 7; } }
-@media (max-width: 900px) { .wall-container { --cols: 8; --rows: 11; --hf: 8.5; } }
+@media (max-width: 1600px) { .wall-container { --cols: 10; --rows: 9; --hf: 7; } }
+@media (max-width: 1200px) { .wall-container { --cols: 8; --rows: 11; --hf: 8.5; } }
+@media (max-width: 900px) { .wall-container { --cols: 7; --rows: 13; --hf: 10; } }
 @media (max-width: 650px) { .wall-container { --cols: 6; --rows: 15; --hf: 11.5; } }
 @media (max-width: 450px) { .wall-container { --cols: 5; --rows: 18; --hf: 13.75; } }
