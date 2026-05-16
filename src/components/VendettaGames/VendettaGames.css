@@ -151,7 +151,7 @@ html, body {
     /* Aggressive scaling logic: fills 95% of available width or height */
     --cell: min(
         calc((100vw - 12vmin) / var(--cols)),
-        calc((100vh - 22vmin) / var(--hf))
+        calc((100vh - 30vmin) / var(--hf))
     );
 }
 
