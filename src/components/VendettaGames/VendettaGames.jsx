@@ -24,7 +24,7 @@ function VendettaGames() {
         setPlayers(docSnap.data());
       } else {
         const initial = {};
-        for (let i = 0; i <= 59; i++) initial[i] = true;
+        for (let i = 0; i <= 79; i++) initial[i] = true;
         setDoc(docRef, initial);
       }
       setLoadingDb(false);
@@ -96,11 +96,10 @@ function VendettaGames() {
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
-      if (w >= 1600) setColCount(11);
-      else if (w >= 1200) setColCount(10);
-      else if (w >= 900) setColCount(8);
-      else if (w >= 650) setColCount(7);
-      else if (w >= 450) setColCount(6);
+      if (w > 1200) setColCount(12);
+      else if (w > 900) setColCount(10);
+      else if (w > 650) setColCount(8);
+      else if (w > 450) setColCount(6);
       else setColCount(5);
     };
     window.addEventListener('resize', update);
@@ -277,8 +276,8 @@ function VendettaGames() {
     const result = [];
     let idx = 0;
     let isOffset = false;
-    while (idx < 60) {
-      const count = Math.min(isOffset ? colCount - 1 : colCount, 60 - idx);
+    while (idx < 80) {
+      const count = Math.min(isOffset ? colCount - 1 : colCount, 80 - idx);
       result.push({ start: idx, count, offset: isOffset });
       idx += count;
       isOffset = !isOffset;
@@ -306,7 +305,7 @@ function VendettaGames() {
         <span className="counter-label">VIVOS</span>
         <span className="counter-value">{String(aliveCount).padStart(2, '0')}</span>
         <span className="counter-slash">/</span>
-        <span className="counter-total">60</span>
+        <span className="counter-total">80</span>
       </div>
 
       <div className="screen-frame">

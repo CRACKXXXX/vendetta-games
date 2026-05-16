@@ -154,7 +154,7 @@ if (Object.keys(photoUpdates).length > 0) {
       await updateDoc(docRef, photoUpdates);
     } else {
       const initial = {};
-      for (let i = 0; i <= 59; i++) initial[i] = true;
+      for (let i = 0; i <= 79; i++) initial[i] = true;
       await setDoc(docRef, { ...initial, ...photoUpdates });
     }
     console.log('Firestore actualizado OK');
