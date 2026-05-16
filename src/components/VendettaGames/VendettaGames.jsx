@@ -96,10 +96,10 @@ function VendettaGames() {
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
-      if (w > 1600) setColCount(11);
-      else if (w > 1200) setColCount(10);
-      else if (w > 900) setColCount(8);
-      else if (w > 650) setColCount(7);
+      if (w > 1600) setColCount(13);
+      else if (w > 1200) setColCount(11);
+      else if (w > 900) setColCount(10);
+      else if (w > 650) setColCount(8);
       else if (w > 450) setColCount(6);
       else setColCount(5);
     };
