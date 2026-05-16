@@ -28,7 +28,7 @@ html, body {
     overflow: hidden;
     position: relative;
     /* Safe Zone: avoids clipping with 3D TV models frames */
-    padding: 2vmin; 
+    padding: 1vmin; 
     box-sizing: border-box;
 }
 
@@ -51,11 +51,11 @@ html, body {
     position: relative;
     z-index: 2;
     margin: 0;
-    padding: 1vmin 0 0.5vmin;
+    padding: 0.5vmin 0 0.5vmin;
     font-family: 'Game Of Squids', 'Orbitron', sans-serif;
     font-weight: 900;
     /* MASSIVE Scaling: No fixed limits for ONX TVs */
-    font-size: 8.5vmin; 
+    font-size: 6.8vmin; 
     letter-spacing: 0.25em;
     color: #d4af37;
     text-align: center;
@@ -78,7 +78,7 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 1vmin 2vmin 2vmin;
+    margin: 0.5vmin 1vmin 1vmin;
     position: relative;
     overflow: hidden;
     border-radius: 1vmin;
@@ -104,7 +104,7 @@ html, body {
     align-items: center;
     justify-content: center;
     gap: 1.5vmin;
-    padding: 1vmin 6vmin;
+    padding: 0.8vmin 4vmin;
     margin: 0 auto;
     background: rgba(8, 8, 12, 0.9);
     border: 0.2vmin solid rgba(212, 175, 55, 0.3);
@@ -114,7 +114,7 @@ html, body {
     -webkit-backdrop-filter: blur(8px);
     
     font-family: 'Orbitron', sans-serif;
-    font-size: 3.5vmin; /* HUD text size */
+    font-size: 2.8vmin; /* HUD text size */
     color: #d4af37;
     letter-spacing: 0.15em;
     text-shadow: 0 0 1.5vmin rgba(212, 175, 55, 0.4);
@@ -136,7 +136,7 @@ html, body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 1vmin;
+    padding: 0.5vmin;
     position: relative;
     z-index: 1;
     transform: perspective(2000px) rotateX(1.5deg);
@@ -150,8 +150,8 @@ html, body {
     
     /* Aggressive scaling logic: fills 95% of available width or height */
     --cell: min(
-        calc((100vw - 12vmin) / var(--cols)),
-        calc((100vh - 30vmin) / var(--hf))
+        calc((100vw - 6vmin) / var(--cols)),
+        calc((100vh - 18vmin) / var(--hf))
     );
 }
 
